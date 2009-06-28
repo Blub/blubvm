@@ -1,0 +1,27 @@
+Getting the code
+****************
+
+  1. `cd' to your nexuiz configuration folder. (eg.: ~/.nexuiz/data)
+  2. Clone the repository using:
+       git clone http://git.rear.endoftheinternet.org/blubvm.git
+  3. Now you're ready to use the code.
+
+Installation
+************
+
+   If you have a copy of the blubvm files elsewhere than described in
+`Getting the code' then you simply have to put the *.cfg files into a folder
+called blubvm/ in your nexuiz configuration folder.
+
+   You can either use your user-configuration directory, or the directory in
+which  the  game  itself  is  installed.  (eg.: ~/.nexuiz/data or
+/usr/share/games/nexuiz if that's where it is installed.)
+
+     mkdir ~/.nexuiz/data/blubvm
+     cp *.cfg ~/.nexuiz/data/blubvm
+
+Bugs, Features requests, Feedback
+*********************************
+
+   If you have something to say, visit #alientrap on AnyNet with your favourite
+IRC client.
