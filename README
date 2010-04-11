@@ -3,3 +3,121 @@ For licensing read COPYING.
 
 If any of those files is missing, you can retrieve them from the git repository
 from http://github.com/Blub/blubvm
+
+
+fnord.cfg
+	Description:
+		Creates random sentences of disinformation. Depending on the source
+		of words/phrazes, it can be gramatically right or wrong. With all_fnord.cfg
+		it should be correct most of the time.
+	Setup and Configuration:
+		You can change the way the text is displayed by changing the following alias
+		after executing fnord.cfg:
+			alias fnord_say  "say ^2${fnord_text}."
+	Usage:
+		Simply use the console command:
+		fnord
+
+all_fnord.cfg
+	Included by fnord.cfg.
+	Collection of words and phrazes the fnord code uses.
+
+lisp.cfg
+	Description:
+		A lisp interpreter. Needs xonotic or nexiuz.
+		For a version that only requires darkplaces (but lacks mathematical functions) use
+		dplisp.cfg.
+	Setup and Configuration:
+		Nothing. I'm afraid you'll have to read and understand the code if you want to add
+		something to it.
+	Things to keep in mind:
+		It creates an alias named '('. You have to feed each token seperated by space. It
+		CANNOT detect (foo) as the 3 seperate tokens "(" "foo" and ")".
+		There's some BASIC functionality for lambda expressions - read about LISP and Lambda
+		if you want to know more.
+	Usage:
+		In the console: ( <expression> )
+		There's support for "if" and "when". If can have multiple commands which are all executed,
+		when takes one to be executed if the condition is true, and one for when it's false.
+	Examples:
+		To reduce the cvar FOV by 20:
+			( set fov ( - fov 20 ) )
+		To set it to 120 once it falls below 40
+			( if ( < fov 40 ) ( set fov 120 ) )
+		To decide between 2 different actions depending on 2 cvars:
+			( when ( > x y ) ( echo X is bigger than Y, they are: ( get x ) and ( get y ) ) ( echo Y is smaller or equal to X ) )
+oisc.cfg
+	Description:
+		A single but all powerful command. Although it's probably a PITA to use. It's a proof of concept.
+	Requirements:
+		Thes implementation needs multicon for darkplaces. There are branches for it on my github DP clone, and in
+		xonotic: blub/multicon
+		Multicon allows the creation of additional console contexts with "pseudo" threading, so they run in the background.
+pong.cfg
+	Description:
+		An interactive PONG game for the console. It needs the defer command.
+		It might be broken already though, since there have been some changes to the console since it was
+		written.
+	Setup:
+		Bind the following actions to keys: "pong_mov1 1", "pong_mov1 -1", "pong_mov2 1" and "pong_mov2 -1".
+		These are used to move the 2 players up and down.
+		It currently cprint to display the field, which means you need to be in a game.
+		You can change the fprint alias to use echo though.
+	Usage:
+		Start using the command: pong_main
+
+vmx86.cfg
+	Description:
+		Creates a bunch of aliases whch behave similar to x86 assembler instructions.
+	Usage:
+		Lookup the commands in the config, there's too much to explain :P
+
+vmcc.cfg
+vmcc_*.cfg
+	Description:
+		A 'recursive' interpreter and compiler for mathematical expressions.
+		Supports + - * / and ( ) and assignment via =
+	Commands:
+		vmcc_comp
+			Enter compilation mode
+		vmcc_int
+			Enter interpretation mode
+
+		In interpretation mode:
+			cc <expression>
+				Interpret and evaluate the expression
+
+		In compilation mode:
+			ccnew <name>
+				Start a new compilation context with the given name
+			cc <expression>
+				Append the expression to the current context.
+				The expression can contain the following additional keywords:
+					paramc		The parameter count
+					param0		The first parameter
+					param1		The second parameter
+					...
+			ccput "<command>"
+				Appent the command to the context. You can NOT use cvars in there.
+			printv <text>
+				A command to echo text which allows you to print the contents
+				of cvars the by doing: printv @ cvarname
+			xx [<parameter0> [<parameter1>...]]
+				Execute the current compilation context using the provided parameters.
+				The parameters will be accessed via the "param*" keywords.
+			ld <name>
+				Link / Store the current compilation context into a file with the given
+				name.
+			cx <name> [<parameter0> [<parameter1>...]]
+				Execute a program which was previously stored using the ld command.
+	Usage:
+		In interpreter mode (default at first load)
+			cc x = 3 * ( y + 2 )
+		Creating a simple program:
+			vmcc_comp
+			ccnew sum3
+			cc x = param0 + param1 + param2
+			ccput "printv \"The sum of \" @ param0 \", \" @ param1 \" and \" @ param2 \" is: \" @ x"
+			ld sum3
+		Executing the created program:
+			cx sum3 5 9 3
